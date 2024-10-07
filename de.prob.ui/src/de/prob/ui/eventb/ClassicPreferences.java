@@ -97,16 +97,6 @@ public class ClassicPreferences extends PreferencePage implements
 		gridData2.horizontalSpan = 3;
 		versionRemark.setLayoutData(gridData2);
 
-		// Link link = new Link(pageComponent, SWT.BORDER);
-		// link
-		// .setText("This a very simple <A href=\"/downloads.php\">link</A> widget.");
-		// link.setSize(140, 40);
-		// link.addListener(SWT.Selection, new Listener() {
-		// public void handleEvent(final Event event) {
-		// System.out.println("Selection: " + event.text);
-		// }
-		// });
-
 		return pageComponent;
 	}
 
