@@ -6,6 +6,8 @@
 
 package de.prob.ui.eventb;
 
+import de.prob.logging.Logger;
+
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.PreferencePage;
@@ -114,7 +116,7 @@ public class ClassicPreferences extends PreferencePage implements
 		try {
 			prefNode.flush();
 		} catch (BackingStoreException e) {
-			e.printStackTrace();
+			Logger.notifyUser("Failed to save ProB Standalone preferences", e);
 		}
 		return super.performOk();
 	}
