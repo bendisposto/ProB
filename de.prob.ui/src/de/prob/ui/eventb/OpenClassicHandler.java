@@ -31,6 +31,7 @@ public class OpenClassicHandler extends AbstractHandler implements IHandler {
 	private static final String PROB_STANDALONE_NAME = "ProB Standalone";
 	private static final String PROB2_NAME = "ProB2-UI";
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		fSelection = HandlerUtil.getCurrentSelection(event);
 
@@ -66,6 +67,7 @@ public class OpenClassicHandler extends AbstractHandler implements IHandler {
 			this.output = output;
 		}
 
+		@Override
 		public void run() {
 			try {
 				while (true) {

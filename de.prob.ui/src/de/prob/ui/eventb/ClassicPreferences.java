@@ -121,6 +121,7 @@ public class ClassicPreferences extends PreferencePage implements
 		return super.performOk();
 	}
 
+	@Override
 	public void init(final IWorkbench workbench) {
 		prefNode = Platform.getPreferencesService().getRootNode().node(
 				InstanceScope.SCOPE).node("prob_classic_preferences");
