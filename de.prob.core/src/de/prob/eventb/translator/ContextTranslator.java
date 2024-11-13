@@ -8,6 +8,7 @@ package de.prob.eventb.translator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +48,7 @@ import de.be4.classicalb.core.parser.node.AAbstractConstantsContextClause;
 import de.be4.classicalb.core.parser.node.AAxiomsContextClause;
 import de.be4.classicalb.core.parser.node.AConstantsContextClause;
 import de.be4.classicalb.core.parser.node.ADeferredSetSet;
+import de.be4.classicalb.core.parser.node.ADescriptionPragma;
 import de.be4.classicalb.core.parser.node.ADescriptionPredicate;
 import de.be4.classicalb.core.parser.node.AEventBContextParseUnit;
 import de.be4.classicalb.core.parser.node.AExtendsContextClause;
@@ -382,7 +384,8 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 					final String commentString = uca.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 					//System.out.println("Axiom/theorem " + element + " has description " + commentString);
 					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
-					final ADescriptionPredicate dpred = new ADescriptionPredicate(desc,predicate);
+					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+					ADescriptionPredicate dpred = new ADescriptionPredicate(descPragma, predicate);
 					list.add(dpred);
 					labelMapping.put(dpred, element);
 				} else {

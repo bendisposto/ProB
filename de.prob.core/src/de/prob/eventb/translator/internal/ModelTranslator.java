@@ -8,12 +8,12 @@ package de.prob.eventb.translator.internal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eventb.core.EventBAttributes;
-import org.eventb.core.ICommentedElement;
 import org.eventb.core.IConvergenceElement.Convergence;
 import org.eventb.core.ILabeledElement;
 import org.eventb.core.IMachineRoot;
@@ -21,7 +21,6 @@ import org.eventb.core.IPOSequent;
 import org.eventb.core.IPOSource;
 import org.eventb.core.IPSRoot;
 import org.eventb.core.IPSStatus;
-import org.eventb.core.IPredicateElement;
 import org.eventb.core.ISCAction;
 import org.eventb.core.IEvent;
 import org.eventb.core.IInvariant;
@@ -53,6 +52,7 @@ import org.rodinp.core.RodinDBException;
 import de.be4.classicalb.core.parser.node.AAnticipatedEventstatus;
 import de.be4.classicalb.core.parser.node.AConvergentEventstatus;
 import de.be4.classicalb.core.parser.node.ADescriptionEvent;
+import de.be4.classicalb.core.parser.node.ADescriptionPragma;
 import de.be4.classicalb.core.parser.node.ADescriptionPredicate;
 import de.be4.classicalb.core.parser.node.AEvent;
 import de.be4.classicalb.core.parser.node.AEventBModelParseUnit;
@@ -366,11 +366,9 @@ public class ModelTranslator extends AbstractComponentTranslator {
 			if (ucevent.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
 				final String commentString = ucevent.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 				System.out.println("Event " + revent.getLabel() + " has description " + commentString);
-				final ADescriptionEvent devent = new ADescriptionEvent();
-				devent.setEvent(event);
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
-				devent.setContent(desc);
-				eventsList.add(devent); // we add the event with a description node around it; requires new probcli
+				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+				eventsList.add(new ADescriptionEvent(descPragma, event));
 			} else {
 				eventsList.add(event);
 			}
@@ -542,7 +540,8 @@ public class ModelTranslator extends AbstractComponentTranslator {
 					final String commentString = ucp.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 					//System.out.println("Invariant/theorem " + predicate + " has description " + commentString);
 					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
-					final ADescriptionPredicate dpred = new ADescriptionPredicate(desc,predicate);
+					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+					ADescriptionPredicate dpred = new ADescriptionPredicate(descPragma, predicate);
 					list.add(dpred);
 					labelMapping.put(dpred, evPredicate);
 				} else {
