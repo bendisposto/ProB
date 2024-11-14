@@ -37,6 +37,7 @@ import org.eventb.core.ISCVariable;
 import org.eventb.core.ISCVariant;
 import org.eventb.core.ISCWitness;
 import org.eventb.core.ITraceableElement;
+import org.eventb.core.IVariable;
 import org.eventb.core.IVariant;
 import org.eventb.core.ast.Assignment;
 import org.eventb.core.ast.FormulaFactory;
@@ -52,6 +53,7 @@ import org.rodinp.core.RodinDBException;
 import de.be4.classicalb.core.parser.node.AAnticipatedEventstatus;
 import de.be4.classicalb.core.parser.node.AConvergentEventstatus;
 import de.be4.classicalb.core.parser.node.ADescriptionEvent;
+import de.be4.classicalb.core.parser.node.ADescriptionExpression;
 import de.be4.classicalb.core.parser.node.ADescriptionPragma;
 import de.be4.classicalb.core.parser.node.ADescriptionPredicate;
 import de.be4.classicalb.core.parser.node.AEvent;
@@ -452,7 +454,17 @@ public class ModelTranslator extends AbstractComponentTranslator {
 						variable.getIdentifierString());
 				final AIdentifierExpression id = new AIdentifierExpression(
 						Arrays.asList(new TIdentifierLiteral[] { literal }));
-				list.add(id);
+				
+			    final IVariable ucv = (IVariable) variable.getSource(); // comments only attached in unchecked source
+			    if (ucv.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+                    final String commentString = ucv.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+                    final TPragmaFreeText desc = new TPragmaFreeText(commentString);
+                    ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+                    final ADescriptionExpression descid = new ADescriptionExpression(descPragma,id);
+				    list.add(descid);
+			    } else {
+				    list.add(id);
+				}
 			}
 		}
 		variablesModelClause.setIdentifiers(list);
