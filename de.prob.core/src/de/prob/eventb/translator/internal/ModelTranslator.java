@@ -455,15 +455,15 @@ public class ModelTranslator extends AbstractComponentTranslator {
 				final AIdentifierExpression id = new AIdentifierExpression(
 						Arrays.asList(new TIdentifierLiteral[] { literal }));
 				
-			    final IVariable ucv = (IVariable) variable.getSource(); // comments only attached in unchecked source
-			    if (ucv.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
-                    final String commentString = ucv.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-                    final TPragmaFreeText desc = new TPragmaFreeText(commentString);
-                    ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
-                    final ADescriptionExpression descid = new ADescriptionExpression(descPragma,id);
-				    list.add(descid);
-			    } else {
-				    list.add(id);
+				final IVariable ucv = (IVariable) variable.getSource(); // comments only attached in unchecked source
+				if (ucv.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+					final String commentString = ucv.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
+					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+					final ADescriptionExpression descid = new ADescriptionExpression(descPragma,id);
+					list.add(descid);
+				} else {
+					list.add(id);
 				}
 			}
 		}

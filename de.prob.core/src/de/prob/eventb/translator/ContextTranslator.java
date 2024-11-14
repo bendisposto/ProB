@@ -342,30 +342,30 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 			} catch (IllegalArgumentException E) {
 				// the attribute did not exist
 			}
-            // TODO: check unchecked constant and see if we have a comment and generate ADescriptionExpression
-            
-            final AIdentifierExpression cstid = new AIdentifierExpression(Arrays
-						.asList(new TIdentifierLiteral[] { new TIdentifierLiteral(constant.getIdentifierString()) }));
-			
+			// TODO: check unchecked constant and see if we have a comment and generate ADescriptionExpression
+
+			final AIdentifierExpression cstid = new AIdentifierExpression(Arrays
+				.asList(new TIdentifierLiteral[] { new TIdentifierLiteral(constant.getIdentifierString()) }));
+
 			final IConstant ucc = (IConstant) constant.getSource(); // comments only attached in unchecked source
 			if (ucc.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
-                final String commentString = ucc.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-                // System.out.println("Constant " + constant + " has description " + commentString);
-                
+				final String commentString = ucc.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+				// System.out.println("Constant " + constant + " has description " + commentString);
+
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
-                final ADescriptionExpression descid = new ADescriptionExpression(descPragma,cstid);
-                if (isAbstractConstant) {
-                    abstractConstants.add(descid);
-                } else {
-                    concreteConstants.add(descid);
-                }
+				final ADescriptionExpression descid = new ADescriptionExpression(descPragma,cstid);
+				if (isAbstractConstant) {
+					abstractConstants.add(descid);
+				} else {
+					concreteConstants.add(descid);
+				}
 			} else {
-                if (isAbstractConstant) {
-                    abstractConstants.add(cstid);
-                } else {
-                    concreteConstants.add(cstid);
-                }
+				if (isAbstractConstant) {
+					abstractConstants.add(cstid);
+				} else {
+					concreteConstants.add(cstid);
+				}
 			}
 		}
 
