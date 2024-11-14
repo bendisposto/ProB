@@ -28,6 +28,7 @@ import org.eventb.core.IPSRoot;
 import org.eventb.core.IPSStatus;
 import org.eventb.core.ISCAxiom;
 import org.eventb.core.ISCCarrierSet;
+import org.eventb.core.IConstant;
 import org.eventb.core.ISCConstant;
 import org.eventb.core.ISCContext;
 import org.eventb.core.ISCContextRoot;
@@ -48,6 +49,7 @@ import de.be4.classicalb.core.parser.node.AAbstractConstantsContextClause;
 import de.be4.classicalb.core.parser.node.AAxiomsContextClause;
 import de.be4.classicalb.core.parser.node.AConstantsContextClause;
 import de.be4.classicalb.core.parser.node.ADeferredSetSet;
+import de.be4.classicalb.core.parser.node.ADescriptionExpression;
 import de.be4.classicalb.core.parser.node.ADescriptionPragma;
 import de.be4.classicalb.core.parser.node.ADescriptionPredicate;
 import de.be4.classicalb.core.parser.node.AEventBContextParseUnit;
@@ -340,13 +342,30 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 			} catch (IllegalArgumentException E) {
 				// the attribute did not exist
 			}
-
-			if (isAbstractConstant) {
-				abstractConstants.add(new AIdentifierExpression(Arrays
-						.asList(new TIdentifierLiteral[] { new TIdentifierLiteral(constant.getIdentifierString()) })));
+            // TODO: check unchecked constant and see if we have a comment and generate ADescriptionExpression
+            
+            final AIdentifierExpression cstid = new AIdentifierExpression(Arrays
+						.asList(new TIdentifierLiteral[] { new TIdentifierLiteral(constant.getIdentifierString()) }));
+			
+			final IConstant ucc = (IConstant) constant.getSource(); // comments only attached in unchecked source
+			if (ucc.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+                final String commentString = ucc.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+                // System.out.println("Constant " + constant + " has description " + commentString);
+                
+				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
+				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+                final ADescriptionExpression descid = new ADescriptionExpression(descPragma,cstid);
+                if (isAbstractConstant) {
+                    abstractConstants.add(descid);
+                } else {
+                    concreteConstants.add(descid);
+                }
 			} else {
-				concreteConstants.add(new AIdentifierExpression(Arrays
-						.asList(new TIdentifierLiteral[] { new TIdentifierLiteral(constant.getIdentifierString()) })));
+                if (isAbstractConstant) {
+                    abstractConstants.add(cstid);
+                } else {
+                    concreteConstants.add(cstid);
+                }
 			}
 		}
 
