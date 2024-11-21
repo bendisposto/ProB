@@ -316,21 +316,20 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 		final ISCCarrierSet[] carrierSets = context.getSCCarrierSets();
 		final List<PSet> setList = new ArrayList<PSet>(carrierSets.length);
 		for (final ISCCarrierSet carrierSet : carrierSets) {
-		    
 			final ADeferredSetSet deferredSet = new ADeferredSetSet(Arrays
 					.asList(new TIdentifierLiteral[] { new TIdentifierLiteral(carrierSet.getIdentifierString()) }));
-			
+
 			final ICarrierSet ucs = (ICarrierSet) carrierSet.getSource(); // comments only attached in unchecked source
 			if (ucs.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
-                final String commentString = ucs.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-			    System.out.println("Carrier set " + carrierSet + " has comment " + commentString);
-			     
+				final String commentString = ucs.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+				System.out.println("Carrier set " + carrierSet + " has comment " + commentString);
+
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
 				final ADescriptionSet descid = new ADescriptionSet(descPragma,deferredSet);
-			    setList.add(descid);
+				setList.add(descid);
 			} else {
-			    setList.add(deferredSet);
+				setList.add(deferredSet);
 			}
 		}
 		return new ASetsContextClause(setList);
