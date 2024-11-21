@@ -322,8 +322,6 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 			final ICarrierSet ucs = (ICarrierSet) carrierSet.getSource(); // comments only attached in unchecked source
 			if (ucs.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
 				final String commentString = ucs.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-				System.out.println("Carrier set " + carrierSet + " has comment " + commentString);
-
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
 				final ADescriptionSet descid = new ADescriptionSet(descPragma,deferredSet);
@@ -364,8 +362,6 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 			final IConstant ucc = (IConstant) constant.getSource(); // comments only attached in unchecked source
 			if (ucc.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
 				final String commentString = ucc.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-				// System.out.println("Constant " + constant + " has description " + commentString);
-
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
 				final ADescriptionExpression descid = new ADescriptionExpression(descPragma,cstid);
@@ -415,7 +411,6 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 				final IAxiom uca = (IAxiom) element.getSource(); // comments only attached in unchecked source
 				if (uca.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
 					final String commentString = uca.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-					//System.out.println("Axiom/theorem " + element + " has description " + commentString);
 					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
 					ADescriptionPredicate dpred = new ADescriptionPredicate(descPragma, predicate);
