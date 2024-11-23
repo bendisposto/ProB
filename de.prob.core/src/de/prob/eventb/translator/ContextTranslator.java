@@ -321,6 +321,7 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 
 			final ICarrierSet ucs = (ICarrierSet) carrierSet.getSource(); // comments only attached in unchecked source
 			if (ucs.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+			    // The carrier set has a comment attached to it, we convert it to a description pragma:
 				final String commentString = ucs.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
@@ -354,13 +355,13 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 			} catch (IllegalArgumentException E) {
 				// the attribute did not exist
 			}
-			// TODO: check unchecked constant and see if we have a comment and generate ADescriptionExpression
 
 			final AIdentifierExpression cstid = new AIdentifierExpression(Arrays
 				.asList(new TIdentifierLiteral[] { new TIdentifierLiteral(constant.getIdentifierString()) }));
 
 			final IConstant ucc = (IConstant) constant.getSource(); // comments only attached in unchecked source
 			if (ucc.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+			    // The constant has a comment attached to it, we convert it to a description pragma:
 				final String commentString = ucc.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
@@ -410,6 +411,7 @@ public final class ContextTranslator extends AbstractComponentTranslator {
 				final PPredicate predicate = translatePredicate(ff, te, element);
 				final IAxiom uca = (IAxiom) element.getSource(); // comments only attached in unchecked source
 				if (uca.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+			       // The axiom has a comment attached to it, we convert it to a description pragma:
 					final String commentString = uca.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));

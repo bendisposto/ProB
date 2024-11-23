@@ -366,8 +366,11 @@ public class ModelTranslator extends AbstractComponentTranslator {
 			//	System.out.println("Description 1 of " + revent.getLabel() + ": " + ((ICommentedElement) ucevent).getComment());
 			//}
 			if (ucevent.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+				// The event has a comment attached to it, we convert it to a description pragma
+				// these descriptions are treated like template strings (containing ${Expr}) by ProB
+				// to generate descriptions for transitions
 				final String commentString = ucevent.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-				System.out.println("Event " + revent.getLabel() + " has description " + commentString);
+				// System.out.println("Event " + revent.getLabel() + " has description " + commentString);
 				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
 				eventsList.add(new ADescriptionEvent(descPragma, event));
@@ -457,6 +460,7 @@ public class ModelTranslator extends AbstractComponentTranslator {
 				
 				final IVariable ucv = (IVariable) variable.getSource(); // comments only attached in unchecked source
 				if (ucv.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+				    // The variable has a comment attached to it, we convert it to a description pragma:
 					final String commentString = ucv.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
