@@ -460,7 +460,7 @@ public class ModelTranslator extends AbstractComponentTranslator {
 				
 				final IVariable ucv = (IVariable) variable.getSource(); // comments only attached in unchecked source
 				if (ucv.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
-				    // The variable has a comment attached to it, we convert it to a description pragma:
+					// The variable has a comment attached to it, we convert it to a description pragma:
 					final String commentString = ucv.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
 					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
 					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
