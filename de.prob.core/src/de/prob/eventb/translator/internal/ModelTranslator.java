@@ -40,6 +40,7 @@ import org.eventb.core.ISCWitness;
 import org.eventb.core.ITraceableElement;
 import org.eventb.core.IVariable;
 import org.eventb.core.IVariant;
+import org.eventb.core.IWitness;
 import org.eventb.core.ast.Assignment;
 import org.eventb.core.ast.FormulaFactory;
 import org.eventb.core.ast.ITypeEnvironment;
@@ -503,8 +504,18 @@ public class ModelTranslator extends AbstractComponentTranslator {
 					witness);
 			final TIdentifierLiteral label = new TIdentifierLiteral(
 					witness.getLabel());
-			witnessList.add(new AWitness(label, predicate));
-			labelMapping.put(predicate, witness);
+			final IWitness ucw = (IWitness) witness.getSource(); // comments only attached in unchecked 			
+            if (ucw.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+                final String commentString = ucw.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+                final TPragmaFreeText desc = new TPragmaFreeText(commentString);
+                ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+                ADescriptionPredicate dpred = new ADescriptionPredicate(descPragma, predicate);
+                witnessList.add(new AWitness(label, dpred));
+                labelMapping.put(dpred, witness);
+            } else {
+                witnessList.add(new AWitness(label, predicate));
+                labelMapping.put(predicate, witness);
+			}
 		}
 		return witnessList;
 	}
