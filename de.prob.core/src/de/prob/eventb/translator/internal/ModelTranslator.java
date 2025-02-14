@@ -1,5 +1,5 @@
 /**
- * (c) 2009-2024 Lehrstuhl fuer Softwaretechnik und Programmiersprachen, Heinrich
+ * (c) 2009-2025 Lehrstuhl fuer Softwaretechnik und Programmiersprachen, Heinrich
  * Heine Universitaet Duesseldorf This software is licenced under EPL 1.0
  * (http://www.eclipse.org/org/documents/epl-v10.html)
  * */
@@ -23,6 +23,7 @@ import org.eventb.core.IPSRoot;
 import org.eventb.core.IPSStatus;
 import org.eventb.core.ISCAction;
 import org.eventb.core.IEvent;
+import org.eventb.core.IGuard;
 import org.eventb.core.IInvariant;
 import org.eventb.core.ISCEvent;
 import org.eventb.core.ISCGuard;
@@ -436,10 +437,27 @@ public class ModelTranslator extends AbstractComponentTranslator {
 		final ISCGuard[] guards = revent.getSCGuards();
 		for (final ISCGuard guard : guards) {
 			final PPredicate predicate = translatePredicate(ff, localEnv, guard);
+			final IGuard ucg = (IGuard) guard.getSource(); // comments only attached in unchecked source
+			ADescriptionPredicate descpredicate = null;
+			if (ucg.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+					// The guard has a comment attached to it, we convert it to a description pragma:
+					final String commentString = ucg.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
+					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+					descpredicate = new ADescriptionPredicate(descPragma,predicate);
+			}
 			if (guard.isTheorem()) {
-				theoremsList.add(predicate);
+			    if (descpredicate==null) {
+				   theoremsList.add(predicate);
+				} else {
+				   theoremsList.add(descpredicate);
+				}
 			} else {
-				guardsList.add(predicate);
+			    if (descpredicate==null) {
+				   guardsList.add(predicate);
+				} else {
+				   guardsList.add(descpredicate);
+				}
 			}
 			labelMapping.put(predicate, guard);
 		}
