@@ -441,23 +441,23 @@ public class ModelTranslator extends AbstractComponentTranslator {
 			final IGuard ucg = (IGuard) guard.getSource(); // comments only attached in unchecked source
 			ADescriptionPredicate descpredicate = null;
 			if (ucg.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
-					// The guard has a comment attached to it, we convert it to a description pragma:
-					final String commentString = ucg.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-					final TPragmaFreeText desc = new TPragmaFreeText(commentString);
-					ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
-					descpredicate = new ADescriptionPredicate(descPragma,predicate);
+				// The guard has a comment attached to it, we convert it to a description pragma:
+				final String commentString = ucg.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
+				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+				descpredicate = new ADescriptionPredicate(descPragma,predicate);
 			}
 			if (guard.isTheorem()) {
-			    if (descpredicate==null) {
-				   theoremsList.add(predicate);
+				if (descpredicate==null) {
+					theoremsList.add(predicate);
 				} else {
-				   theoremsList.add(descpredicate);
+					theoremsList.add(descpredicate);
 				}
 			} else {
-			    if (descpredicate==null) {
-				   guardsList.add(predicate);
+				if (descpredicate==null) {
+					guardsList.add(predicate);
 				} else {
-				   guardsList.add(descpredicate);
+					guardsList.add(descpredicate);
 				}
 			}
 			labelMapping.put(predicate, guard);
@@ -505,16 +505,16 @@ public class ModelTranslator extends AbstractComponentTranslator {
 			final TIdentifierLiteral label = new TIdentifierLiteral(
 					witness.getLabel());
 			final IWitness ucw = (IWitness) witness.getSource(); // comments only attached in unchecked 			
-            if (ucw.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
-                final String commentString = ucw.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
-                final TPragmaFreeText desc = new TPragmaFreeText(commentString);
-                ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
-                ADescriptionPredicate dpred = new ADescriptionPredicate(descPragma, predicate);
-                witnessList.add(new AWitness(label, dpred));
-                labelMapping.put(dpred, witness);
-            } else {
-                witnessList.add(new AWitness(label, predicate));
-                labelMapping.put(predicate, witness);
+			if (ucw.hasAttribute(EventBAttributes.COMMENT_ATTRIBUTE)) {
+				final String commentString = ucw.getAttributeValue(EventBAttributes.COMMENT_ATTRIBUTE);
+				final TPragmaFreeText desc = new TPragmaFreeText(commentString);
+				ADescriptionPragma descPragma = new ADescriptionPragma(Collections.singletonList(desc));
+				ADescriptionPredicate dpred = new ADescriptionPredicate(descPragma, predicate);
+				witnessList.add(new AWitness(label, dpred));
+				labelMapping.put(dpred, witness);
+			} else {
+				witnessList.add(new AWitness(label, predicate));
+				labelMapping.put(predicate, witness);
 			}
 		}
 		return witnessList;
